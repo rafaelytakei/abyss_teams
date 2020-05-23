@@ -8,7 +8,7 @@
   <title>Abyss Team Comps</title>
   <meta name="description" content="Teams for abyss">
   <meta name="author" content="Rypda">
-  
+
   <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   
@@ -18,8 +18,15 @@
   <div id="sidebar"></div>
   <div id="main-content">
     <div id="floor-div">
-      <select name="floor" id="floor" placeholder="Choose the abyss floor">
-      </select>
+      <div id="dropdown" class="dropdown">
+        <div class="select">
+          <span id="selected">Select Abyss Floor</span>
+          <i class="fa fa-chevron-left"></i>
+        </div>
+        <input type="hidden" name="floor" id="floor">
+        <ul id="dropdown-menu" class="dropdown-menu">
+        </ul>
+      </div>
     </div>
     <div id="comps">
       <h2>No comps for this floor yet!</h2>

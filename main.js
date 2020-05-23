@@ -1,5 +1,4 @@
-var compsList = [
-  {
+var compsList = [{
     floor: 90,
     author: "John",
     comment: "This composition is extremely safe, and can clear this floor relatively trivially. Auto can be used until the Ras, Mercedes, and Aither phase. Once at the 2nd phase of the boss fight, target down Aither using Kiris, using Arky or Kromcruz to supplement your damage. Dizzy can keep Mercedes and Aither from gaining too many turns, and keep Kiris safe. The main point of failure in this phase, is if Kiris is targeted too many times and dies. If Aither is not the “Reveal the Truth” target, the fight may also drag too long, allowing the Attack and Speed buff to become problematic, and kill off members of your team. If these happen, resetting and trying again until Aither is the target will be safer.",
@@ -37,58 +36,135 @@ function docReady(fn) {
 
 docReady(function () {
 
-  // Populate 'floor' select
+
   var floorSelect = document.getElementById('floor');
   var minFloor = 50; // Set minimum floor to show
   var maxFloor = 100; // Set maximum floor to show
+  var dropdown = document.getElementById('dropdown');
+  var dropdownMenu = document.getElementById('dropdown-menu');
+
+  // Populate 'floor' select
   for (var i = minFloor; i <= maxFloor; i++) {
-    var opt = document.createElement("option");
-    opt.text = "Floor " + i;
+    var opt = document.createElement("li");
     opt.value = i;
-    floorSelect.add(opt, floorSelect[i - minFloor]);
+    opt.innerHTML = "Floor " + i;
+    dropdownMenu.appendChild(opt);
   }
-  floorSelect.addEventListener('change', function (v) {
-    var floor = v.target.value;
-    console.log('Changed floor to ' + floor);
-    var comps = document.getElementById('comps');
-    comps.innerHTML = ""; // Cleaning up comps from other floors
-    compsList.forEach(function (comp) {
-      console.log(comp);
-      if (comp.floor == floor) {
-        var compContent = [
-          '<div class="comp">',
-          '<div class="author">',
-          '<h5>Author: '+comp.author+'</h5>',
-          '</div>',
-          '<div class="heros">',
-          '<div class="hero hero-1">',
-          '<img src="https://via.placeholder.com/70" alt="Hero 1">',
-          '<p class="hero-name">'+comp.heros[0]+'</p>',
-          '</div>',
-          '<div class="hero hero-2">',
-          '<img src="https://via.placeholder.com/70" alt="Hero 2">',
-          '<p class="hero-name">'+comp.heros[1]+'</p>',
-          '</div>',
-          '<div class="hero hero-3">',
-          '<img src="https://via.placeholder.com/70" alt="Hero 3">',
-          '<p class="hero-name">'+comp.heros[2]+'</p>',
-          '</div>',
-          '<div class="hero hero-4">',
-          '<img src="https://via.placeholder.com/70" alt="Hero 4">',
-          '<p class="hero-name">'+comp.heros[3]+'</p>',
-          '</div>',
-          '</div>',
-          '<div class="comment">',
-          '<p>'+comp.comment+'</p>',
-          '</div>',
-          '</div>',
-        ].join('');
-        comps.innerHTML += compContent;
+  dropdown.addEventListener('click', function () {
+    dropdown.setAttribute('tabindex', 1);
+    dropdown.focus();
+    dropdown.classList.toggle('active');
+    slideDown(dropdownMenu);
+  });
+  dropdown.addEventListener('focusout', function () {
+    dropdown.classList.remove('active');
+    slideUp(dropdownMenu);
+  });
+  var options = document.querySelectorAll('.dropdown .dropdown-menu li');
+  Array.prototype.forEach.call(options, function (el, i) {
+    el.addEventListener('click', function () {
+      var selected = document.getElementById('selected');
+      selected.innerHTML = el.innerHTML;
+      var currentFloor = document.getElementById('floor');
+      currentFloor.value = el.innerHTML;
+      slideUp(dropdownMenu);
+      var floor = el.value;
+      console.log('Changed floor to ' + floor);
+      var comps = document.getElementById('comps');
+      comps.innerHTML = ""; // Cleaning up comps from other floors
+      compsList.forEach(function (comp) {
+        console.log(comp);
+        if (comp.floor == floor) {
+          var compContent = [
+            '<div class="comp">',
+            '<div class="author">',
+            '<h5>Author: ' + comp.author + '</h5>',
+            '</div>',
+            '<div class="heros">',
+            '<div class="hero hero-1">',
+            '<img src="https://via.placeholder.com/70" alt="Hero 1">',
+            '<p class="hero-name">' + comp.heros[0] + '</p>',
+            '</div>',
+            '<div class="hero hero-2">',
+            '<img src="https://via.placeholder.com/70" alt="Hero 2">',
+            '<p class="hero-name">' + comp.heros[1] + '</p>',
+            '</div>',
+            '<div class="hero hero-3">',
+            '<img src="https://via.placeholder.com/70" alt="Hero 3">',
+            '<p class="hero-name">' + comp.heros[2] + '</p>',
+            '</div>',
+            '<div class="hero hero-4">',
+            '<img src="https://via.placeholder.com/70" alt="Hero 4">',
+            '<p class="hero-name">' + comp.heros[3] + '</p>',
+            '</div>',
+            '</div>',
+            '<div class="comment">',
+            '<p>' + comp.comment + '</p>',
+            '</div>',
+            '</div>',
+          ].join('');
+          comps.innerHTML += compContent;
+        }
+      });
+      if (comps.innerHTML == "") {
+        comps.innerHTML = "<h2>No comps for this floor yet!</h2>"
       }
     });
-    if(comps.innerHTML == "") {
-      comps.innerHTML = "<h2>No comps for this floor yet!</h2>"
-    }
-  })
+  });
 
 });
+
+function slideDown(target, duration = 200) {
+  target.style.removeProperty('display'); /* [1] */
+  var display = window.getComputedStyle(target).display;
+  if (display === 'none') {
+    /* [2] */
+    display = 'block';
+  }
+  target.style.display = display;
+  var height = target.offsetHeight; /* [3] */
+  target.style.height = 0; /* [4] */
+  target.style.paddingTop = 0; /* [5.1] */
+  target.style.paddingBottom = 0; /* [5.2] */
+  target.style.marginTop = 0; /* [6.1] */
+  target.style.marginBottom = 0; /* [6.2] */
+  target.style.overflow = 'hidden'; /* [7] */
+  target.style.boxSizing = 'border-box'; /* [8] */
+  target.style.transitionProperty = "height, margin, padding"; /* [9.1] */
+  target.style.transitionDuration = duration + 'ms'; /* [9.2] */
+  target.style.height = height + 'px'; /* [10] */
+  target.style.removeProperty('padding-top'); /* [11.1] */
+  target.style.removeProperty('padding-bottom'); /* [11.2] */
+  target.style.removeProperty('margin-top'); /* [12.1] */
+  target.style.removeProperty('margin-bottom'); /* [12.2] */
+  window.setTimeout(() => {
+    target.style.removeProperty('height'); /* [13] */
+    target.style.removeProperty('overflow'); /* [14] */
+    target.style.removeProperty('transition-duration'); /* [15.1] */
+    target.style.removeProperty('transition-property'); /* [15.2] */
+  }, duration);
+}
+
+function slideUp(target, duration = 200) {
+  target.style.transitionProperty = 'height, margin, padding'; /* [1.1] */
+  target.style.transitionDuration = duration + 'ms'; /* [1.2] */
+  target.style.boxSizing = 'border-box'; /* [2] */
+  target.style.height = target.offsetHeight + 'px'; /* [3] */
+  target.style.height = 0; /* [4] */
+  target.style.paddingTop = 0; /* [5.1] */
+  target.style.paddingBottom = 0; /* [5.2] */
+  target.style.marginTop = 0; /* [6.1] */
+  target.style.marginBottom = 0; /* [7.2] */
+  target.style.overflow = 'hidden'; /* [7] */
+  window.setTimeout(() => {
+    target.style.display = 'none'; /* [8] */
+    target.style.removeProperty('height'); /* [9] */
+    target.style.removeProperty('padding-top'); /* [10.1] */
+    target.style.removeProperty('padding-bottom'); /* [10.2] */
+    target.style.removeProperty('margin-top'); /* [11.1] */
+    target.style.removeProperty('margin-bottom'); /* [11.2] */
+    target.style.removeProperty('overflow'); /* [12] */
+    target.style.removeProperty('transition-duration'); /* [13.1] */
+    target.style.removeProperty('transition-property'); /* [13.2] */
+  }, duration);
+}
