@@ -1,0 +1,67 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+#sidebar {
+  background-color: #c38d9e;
+  min-width: 250px;
+  height: 100vh;
+}
+
+#main-content {
+  height: 100vh;
+  overflow-y: auto;
+  min-width: calc(100vw - 250px);
+}
+
+#floor-div {
+  display: flex;
+  justify-content: center;
+}
+
+#comps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.comp {
+  margin: 1rem 2rem 1rem 2rem;
+  background-color: #F1DAC4;
+  padding: 1rem 1rem 1rem 1rem;
+  display: grid;
+  border: 1px solid black;
+  border-radius: 20px;
+  grid-template-columns: 15vw 15vw 15vw 15vw;
+  grid-template-rows: 0.5fr fit-content(1fr) 1fr;
+  gap: 1px 1px;
+  grid-template-areas: "author author author author""heros heros heros heros""comment comment comment comment";
+}
+
+.author {
+  grid-area: author;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heros {
+  grid-area: heros;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.comment {
+  grid-area: comment;
+}
+
+.hero-name {
+  margin: 0;
+  text-align: center;
+}
